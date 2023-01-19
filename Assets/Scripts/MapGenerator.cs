@@ -32,11 +32,11 @@ public class MapGenerator : MonoBehaviour
         var nextItemIsRight = Random.Range(0, 2) % 2 == 0;
         if (nextItemIsRight)
         {
-            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.right * 2, Quaternion.identity, 0f).transform;
+            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.right * 2).transform;
         }
         else
         {
-            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.forward * 2, Quaternion.identity, 0f).transform;
+            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.forward * 2).transform;
         }
     }
 }

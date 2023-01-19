@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class PlayerFollower : MonoBehaviour
 {
     Transform target;
     Vector3 offset;

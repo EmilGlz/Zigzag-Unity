@@ -33,7 +33,7 @@ public class ObjectPooler : MonoBehaviour
     #endregion
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
-    public GameObject SpawnFromPool(string tag, Vector3 startPos, Quaternion rotation, float delay)
+    public GameObject SpawnFromPool(string tag, Vector3 startPos, Quaternion rotation = Quaternion.identity)
     {
         if (!poolDictionary.ContainsKey(tag))
         {

@@ -17,14 +17,11 @@ public class PlayerMovement : MonoBehaviour
     public bool hasStarted;
     public bool isAlive;
     public bool movingRight;
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         isAlive = true;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (hasStarted && isAlive)
@@ -32,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
             SetMovementDirection();
         }
     }
-
     private void SetMovementDirection()
     {
         if (movingRight)
@@ -42,6 +38,16 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             rb.velocity = (Vector3.forward * _speed) + Physics.gravity;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Death"))
+        {
+            Debug.Log("Im dead x_x");
+            isAlive = false;
+            rb.velocity = Physics.gravity;
         }
     }
 }
