@@ -2,7 +2,9 @@ using UnityEngine;
 using DG.Tweening;
 public class MapItem : MonoBehaviour, IPooledObject
 {
+    public GameObject crystalObject;
     public bool isTouched;
+    public bool hasCrystal;
     MapGenerator generator;
     private readonly float downAnimationHeight = 10f;
     private readonly float downAnimationDuration = 1f;
@@ -13,7 +15,9 @@ public class MapItem : MonoBehaviour, IPooledObject
     }
     public void OnObjectSpawn()
     {
+        hasCrystal = ProjectController.Instance.CanAddNewCrystal && Random.Range(0, 2) % 2 == 0;
         isTouched = false;
+        crystalObject.SetActive(hasCrystal);
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -33,7 +37,6 @@ public class MapItem : MonoBehaviour, IPooledObject
                 .OnComplete(DownAnimationComplete);
         }
     }
-
     void DownAnimationComplete()
     {
         gameObject.SetActive(false);

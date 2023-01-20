@@ -33,17 +33,18 @@ public class ObjectPooler : MonoBehaviour
     #endregion
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
-    public GameObject SpawnFromPool(string tag, Vector3 startPos, Quaternion rotation = Quaternion.identity)
+    public GameObject SpawnFromPool(string tag, Vector3 startPos, Transform parent = null)
     {
         if (!poolDictionary.ContainsKey(tag))
         {
             Debug.LogWarning($"Pool with tag {tag} does not exist");
             return null;
         }
-
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        if (parent != null)
+            objectToSpawn.transform.SetParent(parent);
         objectToSpawn.SetActive(true);
-        objectToSpawn.transform.SetPositionAndRotation(startPos, rotation);
+        objectToSpawn.transform.position = startPos;
         poolDictionary[tag].Enqueue(objectToSpawn);
         IPooledObject pooledObject = objectToSpawn.GetComponent<IPooledObject>();
         if (pooledObject != null)

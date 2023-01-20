@@ -14,13 +14,16 @@ public class MapGenerator : MonoBehaviour
     #endregion
     [SerializeField] Transform firstItem;
     [SerializeField] GameObject mapItemPrefab;
-    Transform currentItem;
     [SerializeField] int startItemCount = 5;
+    [SerializeField] int crystalCountLimit = 4;
+    Transform currentItem;
     ObjectPooler _pooler;
+    private float itemWidth;
     private void Start()
     {
         _pooler = ObjectPooler.Instance;
         currentItem = firstItem;
+        itemWidth = currentItem.GetChild(1).transform.localScale.x;
         for (int i = 0; i < startItemCount; i++)
         {
             AddNewItem();
@@ -30,13 +33,14 @@ public class MapGenerator : MonoBehaviour
     public void AddNewItem()
     {
         var nextItemIsRight = Random.Range(0, 2) % 2 == 0;
+        //bool withCrystal = canBeWithCrystall && Random.Range(0, 2) % 2 == 0;
         if (nextItemIsRight)
         {
-            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.right * 2).transform;
+            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.right * itemWidth).transform;
         }
         else
         {
-            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.forward * 2).transform;
+            currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.forward * itemWidth).transform;
         }
     }
 }

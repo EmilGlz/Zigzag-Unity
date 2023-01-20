@@ -14,12 +14,14 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     [SerializeField] private float _speed;
     Rigidbody rb;
+    ObjectPooler _pooler;
     public bool hasStarted;
     public bool isAlive;
     public bool movingRight;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        _pooler = ObjectPooler.Instance;
         isAlive = true;
     }
     void Update()
@@ -40,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = (Vector3.forward * _speed) + Physics.gravity;
         }
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Death"))
@@ -48,6 +49,12 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Im dead x_x");
             isAlive = false;
             rb.velocity = Physics.gravity;
+            UIManager.Instance.ShowGameOver();
+        }
+        else if (other.CompareTag("Crystal"))
+        {
+            other.gameObject.SetActive(false);
+            UIManager.Instance.ShowPlusOneText(other.transform);
         }
     }
 }
