@@ -15,4 +15,6 @@ public class CommonObjects : MonoBehaviour
     public Transform GameCanvas;
     public Transform MainMenuCanvas;
     public Transform GameOverCanvas;
+    public MapItem StartMapItem;
+    public MapItem FirstMapItem;
 }

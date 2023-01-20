@@ -14,15 +14,15 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     [SerializeField] private float _speed;
     Rigidbody rb;
-    ObjectPooler _pooler;
     public bool hasStarted;
     public bool isAlive;
     public bool movingRight;
+    private Vector3 startPos;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        _pooler = ObjectPooler.Instance;
         isAlive = true;
+        startPos = transform.position;
     }
     void Update()
     {
@@ -41,6 +41,14 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = (Vector3.forward * _speed) + Physics.gravity;
         }
+    }
+    public void ResetPlayer()
+    {
+        hasStarted = false;
+        isAlive = true;
+        movingRight = true;
+        transform.position = startPos;
+        rb.velocity = Vector3.zero;
     }
     private void OnTriggerEnter(Collider other)
     {

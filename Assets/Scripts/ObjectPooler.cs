@@ -17,6 +17,7 @@ public class ObjectPooler : MonoBehaviour
     {
         Instance = this;
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        activeObjectsFromPool = new Dictionary<string, Queue<GameObject>>();
         foreach (Pool pool in pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
@@ -24,15 +25,18 @@ public class ObjectPooler : MonoBehaviour
             for (int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefab);
+                obj.name = pool.tag + i;
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
             poolDictionary.Add(pool.tag, objectPool);
+            activeObjectsFromPool.Add(pool.tag, new Queue<GameObject>());
         }
     }
     #endregion
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
+    private Dictionary<string, Queue<GameObject>> activeObjectsFromPool;
     public GameObject SpawnFromPool(string tag, Vector3 startPos, Transform parent = null)
     {
         if (!poolDictionary.ContainsKey(tag))
@@ -46,9 +50,32 @@ public class ObjectPooler : MonoBehaviour
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = startPos;
         poolDictionary[tag].Enqueue(objectToSpawn);
+        activeObjectsFromPool[tag].Enqueue(objectToSpawn);
         IPooledObject pooledObject = objectToSpawn.GetComponent<IPooledObject>();
         if (pooledObject != null)
+        {
             pooledObject.OnObjectSpawn();
+            pooledObject.OnObjectFinish = null;
+            pooledObject.OnObjectFinish = () => { DequeueFromActivePool(tag, pooledObject.Instance); };
+        }
         return objectToSpawn;
+    }
+
+    private void DequeueFromActivePool(string tag, GameObject obj)
+    {
+        if (tag != "mapItem")
+            return;
+        activeObjectsFromPool[tag].Dequeue();
+        //Debug.Log($"{obj.name} dequeued from active pool {tag}, count: {activeObjectsFromPool[tag].Count}");
+    }
+
+    public void DequeueAllObjectsFromPool(string tag)
+    {
+        var objArr = activeObjectsFromPool[tag].ToArray();
+        for (int i = 0; i < objArr.Length; i++)
+        {
+            objArr[i].SetActive(false);
+        }
+        activeObjectsFromPool[tag] = new Queue<GameObject>();
     }
 }

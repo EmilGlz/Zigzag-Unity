@@ -2,10 +2,9 @@ using UnityEngine;
 using DG.Tweening;
 public class MainMenuController
 {
-    RectTransform _upObjectsParent;
-    RectTransform _bottomObjectsParent;
+    private RectTransform _upObjectsParent;
+    private RectTransform _bottomObjectsParent;
     private readonly float animTime = 1f;
-
     public MainMenuController(RectTransform upObjectsParent, RectTransform bottomObjectsParent)
     {
         _upObjectsParent = upObjectsParent;

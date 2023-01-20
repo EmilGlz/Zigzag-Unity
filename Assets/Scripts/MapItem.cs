@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
+
 public class MapItem : MonoBehaviour, IPooledObject
 {
     public GameObject crystalObject;
@@ -9,13 +11,19 @@ public class MapItem : MonoBehaviour, IPooledObject
     private readonly float downAnimationHeight = 10f;
     private readonly float downAnimationDuration = 1f;
     private readonly float downAnimationDelay = 1f;
+    private Vector3 startPos;
+
+    public Action OnObjectFinish { get; set; }
+    public GameObject Instance { get => gameObject; }
+
     private void Start()
     {
         generator = MapGenerator.Instance;
+        startPos = transform.position;
     }
     public void OnObjectSpawn()
     {
-        hasCrystal = ProjectController.Instance.CanAddNewCrystal && Random.Range(0, 2) % 2 == 0;
+        hasCrystal = ProjectController.Instance.CanAddNewCrystal && UnityEngine.Random.Range(0, 2) % 2 == 0;
         isTouched = false;
         crystalObject.SetActive(hasCrystal);
     }
@@ -37,8 +45,14 @@ public class MapItem : MonoBehaviour, IPooledObject
                 .OnComplete(DownAnimationComplete);
         }
     }
+    public void ResetPosition()
+    {
+        transform.position = startPos;
+        gameObject.SetActive(true);
+    }
     void DownAnimationComplete()
     {
         gameObject.SetActive(false);
+        OnObjectFinish?.Invoke();
     }
 }

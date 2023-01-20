@@ -12,7 +12,6 @@ public class ProjectController
     public bool CanAddNewCrystal = true;
     public int CurrentCrystalCount;
     private bool _soundOn;
-
     public bool SoundOn { 
         get => _soundOn;
         set {
@@ -20,15 +19,12 @@ public class ProjectController
             Camera.main.GetComponent<AudioListener>().enabled = value;
         } 
     }
-
     public float ScreenHeight
     {
         get => Screen.height;
     }
-
     public float ScreenWidth
     {
         get => Screen.width;
     }
-
 }

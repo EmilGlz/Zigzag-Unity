@@ -13,7 +13,6 @@ public class MapGenerator : MonoBehaviour
     }
     #endregion
     [SerializeField] Transform firstItem;
-    [SerializeField] GameObject mapItemPrefab;
     [SerializeField] int startItemCount = 15;
     Transform currentItem;
     ObjectPooler _pooler;
@@ -21,8 +20,13 @@ public class MapGenerator : MonoBehaviour
     private void Start()
     {
         _pooler = ObjectPooler.Instance;
+        itemWidth = firstItem.GetChild(1).transform.localScale.x;
+        AddFirstItems();
+    }
+
+    public void AddFirstItems()
+    {
         currentItem = firstItem;
-        itemWidth = currentItem.GetChild(1).transform.localScale.x;
         for (int i = 0; i < startItemCount; i++)
         {
             AddNewItem();

@@ -46,13 +46,14 @@ public class UIManager : MonoBehaviour
     }
     public void RetryPressed()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         gameOverMenuController.Close();
-        OpenMainMenu();
-    }
-    public void OpenMainMenu()
-    {
         mainMenuController.Open();
+        CommonObjects.Instance.StartMapItem.ResetPosition();
+        CommonObjects.Instance.FirstMapItem.ResetPosition();
+        _playerMovement.ResetPlayer();
+        // delete all items and generate new ones
+        _pooler.DequeueAllObjectsFromPool("mapItem");
+        MapGenerator.Instance.AddFirstItems();
     }
     public void SoundTogglePressed()
     {
