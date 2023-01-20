@@ -21,4 +21,14 @@ public class ProjectController
         } 
     }
 
+    public float ScreenHeight
+    {
+        get => Screen.height;
+    }
+
+    public float ScreenWidth
+    {
+        get => Screen.width;
+    }
+
 }

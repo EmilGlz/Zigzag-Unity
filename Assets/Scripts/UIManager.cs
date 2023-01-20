@@ -17,47 +17,43 @@ public class UIManager : MonoBehaviour
     #endregion
     ObjectPooler _pooler;
     PlayerMovement _playerMovement;
-    [SerializeField] Transform GameCanvas;
-    [SerializeField] Transform MainMenuCanvas;
-    [SerializeField] Transform GameOverCanvas;
-    [SerializeField] Transform UIButtonPositionsParent;
+    MainMenuController mainMenuController;
+    GameOverMenuController gameOverMenuController;
     private void Start()
     {
         _playerMovement = PlayerMovement.Instance;
         _pooler = ObjectPooler.Instance;
+        mainMenuController = new MainMenuController(CommonObjects.Instance.mainMenuUpObjectsParent, CommonObjects.Instance.mainMenuBottomObjectsParent);
+        gameOverMenuController = new GameOverMenuController();
     }
     public void TouchPressed()
     {
         if (!_playerMovement.hasStarted)
+        { 
             _playerMovement.hasStarted = true;
+            mainMenuController.Close();
+        }
         _playerMovement.movingRight = !_playerMovement.movingRight;
     }
     public void ShowGameOver()
     {
-        GameOverCanvas.gameObject.SetActive(true);
-        float animTime = .2f;
-        Sequence mySequence = DOTween.Sequence();
-        for (int i = 0; i < GameOverCanvas.childCount; i++)
-        {
-            Tween tween = GameOverCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(0f, animTime).SetDelay(0);
-            mySequence.Append(tween);
-        }
-        mySequence.Play();
+        gameOverMenuController.Open();
     }
     public void ShowPlusOneText(Transform crystalObj)
     {
         Vector3 objectiveScreenPos = Camera.main.WorldToScreenPoint(crystalObj.position);
-        _pooler.SpawnFromPool("PlusOne", objectiveScreenPos, GameCanvas);
+        _pooler.SpawnFromPool("PlusOne", objectiveScreenPos, CommonObjects.Instance.GameCanvas);
     }
     public void RetryPressed()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        gameOverMenuController.Close();
+        OpenMainMenu();
     }
     public void OpenMainMenu()
     {
-        
+        mainMenuController.Open();
     }
-
     public void SoundTogglePressed()
     {
         ProjectController.Instance.SoundOn = !ProjectController.Instance.SoundOn;
