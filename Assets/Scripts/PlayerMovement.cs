@@ -46,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Death"))
         {
-            Debug.Log("Im dead x_x");
             isAlive = false;
             rb.velocity = Physics.gravity;
             UIManager.Instance.ShowGameOver();

@@ -19,7 +19,7 @@ public static class StorageHandler
         // FInally Close the FileStream and let the rest wrap itself up.
         fileStream.Close();
     }
-    public static void GetUser()
+    public static UserDatas GetUser()
     {
         string FullFilePath = Application.persistentDataPath + "/" + userFileName + ".bin";
         // Check if our file exists, if it does not, just return a null object.
@@ -30,11 +30,11 @@ public static class StorageHandler
             object obj = Formatter.Deserialize(fileStream);
             fileStream.Close();
             // Return the uncast untyped object.
-            ProjectController.Instance.UserDatas = obj as UserDatas;
+            return obj as UserDatas;
         }
         else
         {
-            ProjectController.Instance.UserDatas = new UserDatas();
+            return null;
         }
     }
 }

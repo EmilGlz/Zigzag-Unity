@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,8 +17,10 @@ public class UIManager : MonoBehaviour
     #endregion
     ObjectPooler _pooler;
     PlayerMovement _playerMovement;
-    [SerializeField] Transform Canvas;
+    [SerializeField] Transform GameCanvas;
+    [SerializeField] Transform MainMenuCanvas;
     [SerializeField] Transform GameOverCanvas;
+    [SerializeField] Transform UIButtonPositionsParent;
     private void Start()
     {
         _playerMovement = PlayerMovement.Instance;
@@ -42,6 +47,20 @@ public class UIManager : MonoBehaviour
     public void ShowPlusOneText(Transform crystalObj)
     {
         Vector3 objectiveScreenPos = Camera.main.WorldToScreenPoint(crystalObj.position);
-        _pooler.SpawnFromPool("PlusOne", objectiveScreenPos, Canvas);
+        _pooler.SpawnFromPool("PlusOne", objectiveScreenPos, GameCanvas);
+    }
+    public void RetryPressed()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void OpenMainMenu()
+    {
+        
+    }
+
+    public void SoundTogglePressed()
+    {
+        ProjectController.Instance.SoundOn = !ProjectController.Instance.SoundOn;
+        EventSystem.current.currentSelectedGameObject.transform.GetComponentInChildren<Image>().fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
     }
 }

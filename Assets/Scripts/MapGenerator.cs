@@ -14,8 +14,7 @@ public class MapGenerator : MonoBehaviour
     #endregion
     [SerializeField] Transform firstItem;
     [SerializeField] GameObject mapItemPrefab;
-    [SerializeField] int startItemCount = 5;
-    [SerializeField] int crystalCountLimit = 4;
+    [SerializeField] int startItemCount = 15;
     Transform currentItem;
     ObjectPooler _pooler;
     private float itemWidth;

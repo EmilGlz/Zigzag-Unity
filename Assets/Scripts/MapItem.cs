@@ -8,7 +8,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     MapGenerator generator;
     private readonly float downAnimationHeight = 10f;
     private readonly float downAnimationDuration = 1f;
-    private readonly float downAnimationDelay = 1.5f;
+    private readonly float downAnimationDelay = 1f;
     private void Start()
     {
         generator = MapGenerator.Instance;

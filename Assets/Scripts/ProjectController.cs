@@ -1,13 +1,24 @@
+using UnityEngine;
+
 public class ProjectController
 {
-    #region Singleton
-    public static ProjectController Instance;
-    private void Awake()
+    private static ProjectController instance;
+    public static ProjectController Instance { get => instance; set => instance = value; }
+    public ProjectController()
     {
-        Instance = this;
+        instance = this;
     }
-    #endregion
     public UserDatas UserDatas;
     public bool CanAddNewCrystal = true;
     public int CurrentCrystalCount;
+    private bool _soundOn;
+
+    public bool SoundOn { 
+        get => _soundOn;
+        set {
+            _soundOn = value;
+            Camera.main.GetComponent<AudioListener>().enabled = value;
+        } 
+    }
+
 }
