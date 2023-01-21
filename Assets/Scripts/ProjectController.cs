@@ -8,8 +8,9 @@ public class ProjectController
     public ProjectController()
     {
         instance = this;
-        BestScore = PlayerPrefs.GetInt("BestScore");
-        AutopilotOn = PlayerPrefs.GetInt("Autopilot") == 1;
+        _bestScore = PlayerPrefs.GetInt("BestScore");
+        _autopilotOn = PlayerPrefs.GetInt("Autopilot") == 1;
+        _soundOn = PlayerPrefs.GetInt("SoundOn") == 1;
     }
     private int _bestScore;
     private int _currentScore;
@@ -44,6 +45,7 @@ public class ProjectController
         {
             _soundOn = value;
             Camera.main.GetComponent<AudioListener>().enabled = value;
+            PlayerPrefs.SetInt("SoundOn", value ? 1 : 0);
         }
     }
     public float ScreenHeight

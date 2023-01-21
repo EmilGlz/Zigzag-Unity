@@ -1,6 +1,8 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using DG.Tweening.Plugins.Options;
+using DG.Tweening.Core;
 
 public class MapItem : MonoBehaviour, IPooledObject
 {
@@ -12,10 +14,9 @@ public class MapItem : MonoBehaviour, IPooledObject
     private readonly float downAnimationDuration = 1f;
     private readonly float downAnimationDelay = 1f;
     private Vector3 startPos;
-
     public Action OnObjectFinish { get; set; }
     public GameObject Instance { get => gameObject; }
-
+    TweenerCore<Vector3, Vector3, VectorOptions> seq;
     private void Start()
     {
         generator = MapGenerator.Instance;
@@ -39,10 +40,11 @@ public class MapItem : MonoBehaviour, IPooledObject
     {
         if (collision.gameObject.CompareTag("Player") && isTouched)
         {
-            transform.DOMoveY(endValue: transform.position.y - downAnimationHeight,
+            seq = transform.DOMoveY(endValue: transform.position.y - downAnimationHeight,
                 duration: downAnimationDuration)
                 .SetDelay(downAnimationDelay)
                 .OnComplete(DownAnimationComplete);
+            seq.Play();
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -63,6 +65,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     }
     public void ResetPosition()
     {
+        seq.Kill();
         transform.position = startPos;
         gameObject.SetActive(true);
     }

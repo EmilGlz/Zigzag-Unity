@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CommonObjects : MonoBehaviour
 {
@@ -25,4 +26,5 @@ public class CommonObjects : MonoBehaviour
     public TMP_Text CurrentScoreText_GameOver;
     public TMP_Text BestScoreText_GameOver;
     public GameObject autopilotToggle_Settings;
+    public Image soundImageMainMenu;
 }

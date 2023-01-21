@@ -82,7 +82,7 @@ public class UIManager : MonoBehaviour
     public void SoundTogglePressed()
     {
         ProjectController.Instance.SoundOn = !ProjectController.Instance.SoundOn;
-        EventSystem.current.currentSelectedGameObject.transform.GetComponentInChildren<Image>().fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
+        CommonObjects.Instance.soundImageMainMenu.fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
     }
     public void UpdateCurrentCrystalCountText()
     {
