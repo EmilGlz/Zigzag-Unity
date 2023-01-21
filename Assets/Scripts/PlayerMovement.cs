@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
     [SerializeField] private float _speed;
-    [SerializeField] private Transform test;
     Rigidbody rb;
     public bool hasStarted;
     public bool isAlive;
@@ -26,8 +25,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        //MapGenerator.Instance.pathCorners.Enqueue(currentItem);
-
         rb = GetComponent<Rigidbody>();
         isAlive = true;
         movingAllowed = true;
@@ -59,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ResetPlayer()
     {
+        nextCornerDestination = MapGenerator.Instance.firstItem;
         hasStarted = false;
         isAlive = true;
         movingRight = true;
@@ -95,19 +93,6 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = lastMoveDirection;
     }
     void CalculateXZReachers()
-    {
-        var res = (nextCornerDestination.position - transform.position);
-        if (res.z <= 0 && !zReached)
-        {
-            zReached = true;
-        }
-        if (res.x <= 0 && !xReached)
-        {
-            xReached = true;
-        }
-    }
-
-    public void OnCornerPassed()
     {
         var res = (nextCornerDestination.position - transform.position);
         zReached = res.z <= 0;

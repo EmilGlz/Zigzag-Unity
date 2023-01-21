@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
         SetDefaultCanvases();
         ProjectController.Instance.UIState = UIState.MainMenu;
         autopilotToggle = new CustomToggle(CommonObjects.Instance.autopilotToggle_Settings, ProjectController.Instance.AutopilotOn, AutopilotToggleChanged);
+        CommonObjects.Instance.soundImageMainMenu.fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
     }
     private void SetDefaultCanvases()
     {

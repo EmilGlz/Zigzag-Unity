@@ -24,8 +24,8 @@ public class MapGenerator : MonoBehaviour
         pathCorners = new Queue<Transform>();
         _pooler = ObjectPooler.Instance;
         itemWidth = firstItem.GetChild(1).transform.localScale.x;
-        AddFirstItems();
         pathCorners.Enqueue(firstItem);
+        AddFirstItems();
     }
 
     public void AddFirstItems()
@@ -42,8 +42,10 @@ public class MapGenerator : MonoBehaviour
         var nextItemIsRight = Random.Range(0, 2) % 2 == 0;
         if (lastItemWasRight != nextItemIsRight) // direction changed
         {
-            //Debug.Log("" + currentItem.name + " change direction");
-            pathCorners.Enqueue(currentItem);
+            if (currentItem != firstItem)
+            {
+                pathCorners.Enqueue(currentItem);
+            }
         }
         if (nextItemIsRight)
         {
