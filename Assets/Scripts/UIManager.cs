@@ -72,13 +72,7 @@ public class UIManager : MonoBehaviour
         gameOverMenuController.Close();
         mainMenuController.Open();
         ProjectController.Instance.UIState = UIState.MainMenu;
-        CommonObjects.Instance.StartMapItem.ResetPosition();
-        CommonObjects.Instance.FirstMapItem.ResetPosition();
-        _playerMovement.ResetPlayer();
-        _pooler.DequeueAllObjectsFromPool("mapItem");
-        MapGenerator.Instance.AddFirstItems();
-        ProjectController.Instance.CurrentCrystalCount = 0;
-        UpdateCurrentCrystalCountText();
+        ResetEverything();
     }
     public void SoundTogglePressed()
     {
@@ -102,6 +96,25 @@ public class UIManager : MonoBehaviour
         _playerMovement.movingAllowed = true;
         pauseMenuController.Close();
     }
+    public void OpenMainMenuFromPauseMenu()
+    {
+        pauseMenuController.Close();
+        mainMenuController.Open();
+        ProjectController.Instance.UIState = UIState.MainMenu;
+        ResetEverything();
+    }
+
+    private void ResetEverything()
+    {
+        _pooler.DequeueAllObjectsFromPool("mapItem");
+        CommonObjects.Instance.StartMapItem.ResetPosition();
+        CommonObjects.Instance.FirstMapItem.ResetPosition();
+        _playerMovement.ResetPlayer();
+        MapGenerator.Instance.ResetItems();
+        ProjectController.Instance.CurrentCrystalCount = 0;
+        UpdateCurrentCrystalCountText();
+    }
+
     public void OpenSettingsPressed()
     {
         CommonObjects.Instance.SettingsCanvas.gameObject.SetActive(true);

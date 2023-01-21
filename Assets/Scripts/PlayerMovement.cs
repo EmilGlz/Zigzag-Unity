@@ -38,6 +38,17 @@ public class PlayerMovement : MonoBehaviour
         if (ProjectController.Instance.AutopilotOn)
         { 
             CalculateXZReachers();
+            if (xReached && zReached)
+            {
+                var res = MapGenerator.Instance.pathCorners.ToArray();
+                if (res[0] == nextCornerDestination)
+                {
+                    Debug.Log(res[0].name + " -> " + res[1].name);
+                    nextCornerDestination = res[1];
+                    MapGenerator.Instance.pathCorners.Dequeue();
+                }
+                CalculateXZReachers();
+            }
             movingRight = zReached && !xReached;
         }
         if (hasStarted && isAlive)
@@ -56,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ResetPlayer()
     {
+        movingAllowed = true;
         nextCornerDestination = MapGenerator.Instance.firstItem;
         hasStarted = false;
         isAlive = true;

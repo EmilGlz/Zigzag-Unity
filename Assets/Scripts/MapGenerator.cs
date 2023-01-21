@@ -21,8 +21,13 @@ public class MapGenerator : MonoBehaviour
     private float itemWidth;
     private void Start()
     {
-        pathCorners = new Queue<Transform>();
         _pooler = ObjectPooler.Instance;
+        ResetItems();
+    }
+
+    public void ResetItems()
+    {
+        pathCorners = new Queue<Transform>();
         itemWidth = firstItem.GetChild(1).transform.localScale.x;
         pathCorners.Enqueue(firstItem);
         AddFirstItems();

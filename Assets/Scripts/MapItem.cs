@@ -17,7 +17,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     public Action OnObjectFinish { get; set; }
     public GameObject Instance { get => gameObject; }
     TweenerCore<Vector3, Vector3, VectorOptions> seq;
-    bool playerCrossed = false;
+    bool isAnimating = false;
     private void Start()
     {
         generator = MapGenerator.Instance;
@@ -25,7 +25,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     }
     public void OnObjectSpawn()
     {
-        playerCrossed = false;
+        isAnimating = false;
         hasCrystal = ProjectController.Instance.CanAddNewCrystal && UnityEngine.Random.Range(0, 2) % 2 == 0;
         isTouched = false;
         crystalObject.SetActive(hasCrystal);
@@ -42,6 +42,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     {
         if (collision.gameObject.CompareTag("Player") && isTouched)
         {
+            isAnimating = true;
             seq = transform.DOMoveY(endValue: transform.position.y - downAnimationHeight,
                 duration: downAnimationDuration)
                 .SetDelay(downAnimationDelay)
@@ -50,32 +51,17 @@ public class MapItem : MonoBehaviour, IPooledObject
         }
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && isTouched)
-        {
-            var dif = collision.transform.position - transform.position;
-            if (Math.Abs(dif.x) < 0.2f && Math.Abs(dif.z) < 0.2f && !playerCrossed)
-            {
-                playerCrossed = true;
-                var res = MapGenerator.Instance.pathCorners.ToArray();
-                if (res[0] == transform)
-                {
-                    Debug.Log("Update next destination from" + res[0].name + " to " + res[1].name);
-                    PlayerMovement.Instance.nextCornerDestination = res[1];
-                    MapGenerator.Instance.pathCorners.Dequeue();
-                }
-            }
-        }
-    }
     public void ResetPosition()
     {
+        isTouched = false;
         seq.Kill();
         transform.position = startPos;
         gameObject.SetActive(true);
     }
+
     void DownAnimationComplete()
     {
+        isAnimating = false;
         gameObject.SetActive(false);
         OnObjectFinish?.Invoke();
     }
