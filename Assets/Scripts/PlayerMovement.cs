@@ -16,17 +16,20 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody rb;
     public bool hasStarted;
     public bool isAlive;
+    public bool movingAllowed; // for pause/resume game
     public bool movingRight;
     private Vector3 startPos;
+    private Vector3 lastMoveDirection;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         isAlive = true;
+        movingAllowed = true;
         startPos = transform.position;
     }
     void Update()
     {
-        if (hasStarted && isAlive)
+        if (hasStarted && isAlive && movingAllowed)
         {
             SetMovementDirection();
         }
@@ -62,6 +65,20 @@ public class PlayerMovement : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             UIManager.Instance.ShowPlusOneText(other.transform);
+            ProjectController.Instance.CurrentCrystalCount++;
+            UIManager.Instance.UpdateCurrentCrystalCountText();
         }
+    }
+    public void StopMoving()
+    {
+        movingAllowed = false;
+        lastMoveDirection = rb.velocity;
+        rb.velocity = Vector3.zero;
+    }
+
+    public void ContinueMoving()
+    {
+        movingAllowed = false;
+        rb.velocity = lastMoveDirection;
     }
 }

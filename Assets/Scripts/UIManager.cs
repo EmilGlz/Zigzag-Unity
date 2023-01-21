@@ -19,25 +19,43 @@ public class UIManager : MonoBehaviour
     PlayerMovement _playerMovement;
     MainMenuController mainMenuController;
     GameOverMenuController gameOverMenuController;
+    PauseMenuController pauseMenuController;
+    SettingsMenuController settingsMenuController;
     private void Start()
     {
         _playerMovement = PlayerMovement.Instance;
         _pooler = ObjectPooler.Instance;
         mainMenuController = new MainMenuController(CommonObjects.Instance.mainMenuUpObjectsParent, CommonObjects.Instance.mainMenuBottomObjectsParent);
-        gameOverMenuController = new GameOverMenuController();
+        gameOverMenuController = new GameOverMenuController(CommonObjects.Instance.CurrentScoreText_GameOver, CommonObjects.Instance.BestScoreText_GameOver);
+        pauseMenuController = new PauseMenuController();
+        settingsMenuController = new SettingsMenuController();
+        ProjectController.Instance.UIStateChanged += UpdateCurrentCrystalCountText;
+        SetDefaultCanvases();
+        ProjectController.Instance.UIState = UIState.MainMenu;
+    }
+    private void SetDefaultCanvases()
+    {
+        CommonObjects.Instance.GameCanvas.gameObject.SetActive(true);
+        CommonObjects.Instance.MainMenuCanvas.gameObject.SetActive(true);
+        CommonObjects.Instance.GameOverCanvas.gameObject.SetActive(false);
+        CommonObjects.Instance.PauseCanvas.gameObject.SetActive(false);
     }
     public void TouchPressed()
     {
+        if (!_playerMovement.movingAllowed)
+            return;
         if (!_playerMovement.hasStarted)
-        { 
+        {
             _playerMovement.hasStarted = true;
             mainMenuController.Close();
+            ProjectController.Instance.UIState = UIState.Playing;
         }
         _playerMovement.movingRight = !_playerMovement.movingRight;
     }
     public void ShowGameOver()
     {
-        gameOverMenuController.Open();
+        gameOverMenuController.Open(ProjectController.Instance.CurrentCrystalCount, ProjectController.Instance.BestScore);
+        ProjectController.Instance.UIState = UIState.GameOver;
     }
     public void ShowPlusOneText(Transform crystalObj)
     {
@@ -48,16 +66,40 @@ public class UIManager : MonoBehaviour
     {
         gameOverMenuController.Close();
         mainMenuController.Open();
+        ProjectController.Instance.UIState = UIState.MainMenu;
         CommonObjects.Instance.StartMapItem.ResetPosition();
         CommonObjects.Instance.FirstMapItem.ResetPosition();
         _playerMovement.ResetPlayer();
-        // delete all items and generate new ones
         _pooler.DequeueAllObjectsFromPool("mapItem");
         MapGenerator.Instance.AddFirstItems();
+        ProjectController.Instance.CurrentCrystalCount = 0;
+        UpdateCurrentCrystalCountText();
     }
     public void SoundTogglePressed()
     {
         ProjectController.Instance.SoundOn = !ProjectController.Instance.SoundOn;
         EventSystem.current.currentSelectedGameObject.transform.GetComponentInChildren<Image>().fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
+    }
+    public void UpdateCurrentCrystalCountText()
+    {
+        var isOn = ProjectController.Instance.UIState == UIState.Playing;
+        CommonObjects.Instance.PauseButtonInGame.SetActive(isOn);
+        CommonObjects.Instance.CurrentCrystalCountText.gameObject.SetActive(isOn);
+        CommonObjects.Instance.CurrentCrystalCountText.text = ProjectController.Instance.CurrentCrystalCount.ToString();
+    }
+    public void PauseGame()
+    {
+        _playerMovement.StopMoving();
+        pauseMenuController.Open();
+    }
+    public void ResumeGame()
+    {
+        _playerMovement.movingAllowed = true;
+        pauseMenuController.Close();
+    }
+    public void OpenSettingsPressed()
+    {
+        mainMenuController.Close();
+        settingsMenuController.Open();
     }
 }

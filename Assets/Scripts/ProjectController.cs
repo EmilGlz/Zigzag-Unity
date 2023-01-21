@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ProjectController
@@ -7,17 +8,41 @@ public class ProjectController
     public ProjectController()
     {
         instance = this;
+        BestScore = PlayerPrefs.GetInt("BestScore");
     }
-    public UserDatas UserDatas;
-    public bool CanAddNewCrystal = true;
-    public int CurrentCrystalCount;
+    private int _bestScore;
+    private int _currentScore;
+    private UIState _uiState;
     private bool _soundOn;
-    public bool SoundOn { 
+    public UserDatas UserDatas;
+    public int BestScore
+    {
+        get => _bestScore;
+        set
+        {
+            _bestScore = value;
+            PlayerPrefs.SetInt("BestScore", _bestScore);
+        }
+    }
+    public int CurrentCrystalCount
+    {
+        get => _currentScore;
+        set
+        {
+            _currentScore = value;
+            if (_currentScore > _bestScore)
+                BestScore = _currentScore;
+        }
+    }
+    public bool CanAddNewCrystal = true;
+    public bool SoundOn
+    {
         get => _soundOn;
-        set {
+        set
+        {
             _soundOn = value;
             Camera.main.GetComponent<AudioListener>().enabled = value;
-        } 
+        }
     }
     public float ScreenHeight
     {
@@ -27,4 +52,20 @@ public class ProjectController
     {
         get => Screen.width;
     }
+    public UIState UIState
+    {
+        get => _uiState; set
+        {
+            _uiState = value;
+            UIStateChanged?.Invoke();
+        }
+    }
+    public Action UIStateChanged;
+}
+public enum UIState
+{
+    Playing,
+    Paused,
+    MainMenu,
+    GameOver
 }
