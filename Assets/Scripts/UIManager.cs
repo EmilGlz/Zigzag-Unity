@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     GameOverMenuController gameOverMenuController;
     PauseMenuController pauseMenuController;
     SettingsMenuController settingsMenuController;
+    CustomToggle autopilotToggle;
     private void Start()
     {
         _playerMovement = PlayerMovement.Instance;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
         ProjectController.Instance.UIStateChanged += UpdateCurrentCrystalCountText;
         SetDefaultCanvases();
         ProjectController.Instance.UIState = UIState.MainMenu;
+        autopilotToggle = new CustomToggle(CommonObjects.Instance.autopilotToggle_Settings, ProjectController.Instance.AutopilotOn, AutopilotToggleChanged);
     }
     private void SetDefaultCanvases()
     {
@@ -39,9 +41,12 @@ public class UIManager : MonoBehaviour
         CommonObjects.Instance.MainMenuCanvas.gameObject.SetActive(true);
         CommonObjects.Instance.GameOverCanvas.gameObject.SetActive(false);
         CommonObjects.Instance.PauseCanvas.gameObject.SetActive(false);
+        CommonObjects.Instance.SettingsCanvas.gameObject.SetActive(false);
     }
     public void TouchPressed()
     {
+        if (ProjectController.Instance.AutopilotOn)
+            return;
         if (!_playerMovement.movingAllowed)
             return;
         if (!_playerMovement.hasStarted)
@@ -99,7 +104,17 @@ public class UIManager : MonoBehaviour
     }
     public void OpenSettingsPressed()
     {
+        CommonObjects.Instance.SettingsCanvas.gameObject.SetActive(true);
         mainMenuController.Close();
         settingsMenuController.Open();
+    }
+    public void CloseSettingsPressed()
+    {
+        mainMenuController.Open();
+        settingsMenuController.Close();
+    }
+    void AutopilotToggleChanged(bool isOn)
+    {
+        ProjectController.Instance.AutopilotOn = isOn;
     }
 }

@@ -17,10 +17,12 @@ public class CommonObjects : MonoBehaviour
     public Transform MainMenuCanvas;
     public Transform GameOverCanvas;
     public Transform PauseCanvas;
+    public Transform SettingsCanvas;
     public MapItem StartMapItem;
     public MapItem FirstMapItem;
     public TMP_Text CurrentCrystalCountText;
     public GameObject PauseButtonInGame;
     public TMP_Text CurrentScoreText_GameOver;
     public TMP_Text BestScoreText_GameOver;
+    public GameObject autopilotToggle_Settings;
 }

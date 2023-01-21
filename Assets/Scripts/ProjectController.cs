@@ -14,6 +14,7 @@ public class ProjectController
     private int _currentScore;
     private UIState _uiState;
     private bool _soundOn;
+    private bool _autopilotOn;
     public UserDatas UserDatas;
     public int BestScore
     {
@@ -60,6 +61,16 @@ public class ProjectController
             UIStateChanged?.Invoke();
         }
     }
+    public bool AutopilotOn
+    {
+        get => _autopilotOn; 
+        set
+        {
+            _autopilotOn = value;
+            PlayerPrefs.SetInt("Autopilot", value ? 1 : 0);
+        }
+    }
+
     public Action UIStateChanged;
 }
 public enum UIState
