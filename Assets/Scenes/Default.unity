@@ -807,7 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a679e6514b724c47b849c6cc562aff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 5
   hasStarted: 0
   isAlive: 0
   movingAllowed: 0
