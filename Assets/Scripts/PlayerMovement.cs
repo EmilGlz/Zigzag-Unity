@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
                 var res = MapGenerator.Instance.pathCorners.ToArray();
                 if (res[0] == nextCornerDestination)
                 {
-                    Debug.Log(res[0].name + " -> " + res[1].name);
+                    //Debug.Log(res[0].name + " -> " + res[1].name);
                     nextCornerDestination = res[1];
                     MapGenerator.Instance.pathCorners.Dequeue();
                 }
@@ -83,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = Physics.gravity;
             UIManager.Instance.ShowGameOver();
             AudioManager.Instance.Play(0);
+            ProjectController.Instance.GamesPlayed++;
         }
         else if (other.CompareTag("Crystal"))
         {

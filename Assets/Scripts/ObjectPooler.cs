@@ -56,12 +56,12 @@ public class ObjectPooler : MonoBehaviour
         {
             pooledObject.OnObjectSpawn();
             pooledObject.OnObjectFinish = null;
-            pooledObject.OnObjectFinish = () => { DequeueFromActivePool(tag, pooledObject.Instance); };
+            pooledObject.OnObjectFinish = () => { DequeueFromActivePool(tag); };
         }
         return objectToSpawn;
     }
 
-    private void DequeueFromActivePool(string tag, GameObject obj)
+    private void DequeueFromActivePool(string tag)
     {
         if (tag != "mapItem")
             return;

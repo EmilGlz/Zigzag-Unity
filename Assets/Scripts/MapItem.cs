@@ -17,7 +17,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     public Action OnObjectFinish { get; set; }
     public GameObject Instance { get => gameObject; }
     TweenerCore<Vector3, Vector3, VectorOptions> seq;
-    bool isAnimating = false;
+    public bool isAnimating = false;
     private void Start()
     {
         generator = MapGenerator.Instance;
