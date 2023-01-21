@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
             isAlive = false;
             rb.velocity = Physics.gravity;
             UIManager.Instance.ShowGameOver();
+            AudioManager.Instance.Play(0);
         }
         else if (other.CompareTag("Crystal"))
         {
@@ -79,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
             UIManager.Instance.ShowPlusOneText(other.transform);
             ProjectController.Instance.CurrentCrystalCount++;
             UIManager.Instance.UpdateCurrentCrystalCountText();
+            AudioManager.Instance.Play(2);
         }
     }
     public void StopMoving()
