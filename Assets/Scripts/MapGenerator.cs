@@ -12,16 +12,20 @@ public class MapGenerator : MonoBehaviour
         _instance = this;
     }
     #endregion
-    [SerializeField] Transform firstItem;
+    public Queue<Transform> pathCorners;
+    public Transform firstItem;
     [SerializeField] int startItemCount = 15;
     Transform currentItem;
     ObjectPooler _pooler;
+    bool lastItemWasRight;
     private float itemWidth;
     private void Start()
     {
+        pathCorners = new Queue<Transform>();
         _pooler = ObjectPooler.Instance;
         itemWidth = firstItem.GetChild(1).transform.localScale.x;
         AddFirstItems();
+        pathCorners.Enqueue(firstItem);
     }
 
     public void AddFirstItems()
@@ -36,7 +40,11 @@ public class MapGenerator : MonoBehaviour
     public void AddNewItem()
     {
         var nextItemIsRight = Random.Range(0, 2) % 2 == 0;
-        //bool withCrystal = canBeWithCrystall && Random.Range(0, 2) % 2 == 0;
+        if (lastItemWasRight != nextItemIsRight) // direction changed
+        {
+            //Debug.Log("" + currentItem.name + " change direction");
+            pathCorners.Enqueue(currentItem);
+        }
         if (nextItemIsRight)
         {
             currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.right * itemWidth).transform;
@@ -45,5 +53,6 @@ public class MapGenerator : MonoBehaviour
         {
             currentItem = _pooler.SpawnFromPool("mapItem", currentItem.position + Vector3.forward * itemWidth).transform;
         }
+        lastItemWasRight = nextItemIsRight;
     }
 }

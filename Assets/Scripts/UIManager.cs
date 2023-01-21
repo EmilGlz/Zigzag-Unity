@@ -45,8 +45,6 @@ public class UIManager : MonoBehaviour
     }
     public void TouchPressed()
     {
-        if (ProjectController.Instance.AutopilotOn)
-            return;
         if (!_playerMovement.movingAllowed)
             return;
         if (!_playerMovement.hasStarted)
@@ -55,7 +53,8 @@ public class UIManager : MonoBehaviour
             mainMenuController.Close();
             ProjectController.Instance.UIState = UIState.Playing;
         }
-        _playerMovement.movingRight = !_playerMovement.movingRight;
+        if (!ProjectController.Instance.AutopilotOn)
+            _playerMovement.movingRight = !_playerMovement.movingRight;
     }
     public void ShowGameOver()
     {

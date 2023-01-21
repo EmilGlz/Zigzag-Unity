@@ -39,10 +39,26 @@ public class MapItem : MonoBehaviour, IPooledObject
     {
         if (collision.gameObject.CompareTag("Player") && isTouched)
         {
-            transform.DOMoveY(endValue: transform.position.y - downAnimationHeight, 
+            transform.DOMoveY(endValue: transform.position.y - downAnimationHeight,
                 duration: downAnimationDuration)
                 .SetDelay(downAnimationDelay)
                 .OnComplete(DownAnimationComplete);
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && isTouched)
+        {
+            if (collision.transform.position == transform.position)
+            {
+                var res = MapGenerator.Instance.pathCorners.ToArray();
+                if (res[0] == transform)
+                {
+                    PlayerMovement.Instance.nextCornerDestination = res[1];
+                    PlayerMovement.Instance.OnCornerPassed();
+                    MapGenerator.Instance.pathCorners.Dequeue();
+                }
+            }
         }
     }
     public void ResetPosition()

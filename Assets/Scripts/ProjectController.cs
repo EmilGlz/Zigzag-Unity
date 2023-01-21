@@ -9,6 +9,7 @@ public class ProjectController
     {
         instance = this;
         BestScore = PlayerPrefs.GetInt("BestScore");
+        AutopilotOn = PlayerPrefs.GetInt("Autopilot") == 1;
     }
     private int _bestScore;
     private int _currentScore;
