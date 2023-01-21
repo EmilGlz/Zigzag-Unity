@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
             other.gameObject.SetActive(false);
             UIManager.Instance.ShowPlusOneText(other.transform);
             ProjectController.Instance.CurrentCrystalCount++;
+            UIManager.Instance.CheckForChangeMapItemColor();
             UIManager.Instance.UpdateCurrentCrystalCountText();
             AudioManager.Instance.Play(2);
         }

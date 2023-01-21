@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
         autopilotToggle = new CustomToggle(CommonObjects.Instance.autopilotToggle_Settings, ProjectController.Instance.AutopilotOn, AutopilotToggleChanged);
         CommonObjects.Instance.soundImageMainMenu.fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
         mainMenuController.Open();
+        CommonObjects.Instance.mapItemMaterial.color = CommonObjects.Instance.mapColorsEvery25Crystals[0];
     }
     private void SetDefaultCanvases()
     {
@@ -104,9 +105,9 @@ public class UIManager : MonoBehaviour
         ProjectController.Instance.UIState = UIState.MainMenu;
         ResetEverything();
     }
-
     private void ResetEverything()
     {
+        CommonObjects.Instance.mapItemMaterial.color = CommonObjects.Instance.mapColorsEvery25Crystals[0];
         _pooler.DequeueAllObjectsFromPool("mapItem");
         CommonObjects.Instance.StartMapItem.ResetPosition();
         CommonObjects.Instance.FirstMapItem.ResetPosition();
@@ -115,7 +116,6 @@ public class UIManager : MonoBehaviour
         ProjectController.Instance.CurrentCrystalCount = 0;
         UpdateCurrentCrystalCountText();
     }
-
     public void OpenSettingsPressed()
     {
         CommonObjects.Instance.SettingsCanvas.gameObject.SetActive(true);
@@ -130,5 +130,16 @@ public class UIManager : MonoBehaviour
     void AutopilotToggleChanged(bool isOn)
     {
         ProjectController.Instance.AutopilotOn = isOn;
+    }
+    public void CheckForChangeMapItemColor()
+    {
+        var currentValue = ProjectController.Instance.CurrentCrystalCount;
+        if (currentValue != 0 && currentValue % ProjectController.Instance.ChangeColorEveryCrystalCount == 0)
+        {
+            var index = currentValue / ProjectController.Instance.ChangeColorEveryCrystalCount;
+            if (index >= CommonObjects.Instance.mapColorsEvery25Crystals.Count)
+                index %= CommonObjects.Instance.mapColorsEvery25Crystals.Count;
+            CommonObjects.Instance.mapItemMaterial.DOColor(CommonObjects.Instance.mapColorsEvery25Crystals[index], 1);
+        }
     }
 }

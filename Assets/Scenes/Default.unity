@@ -1883,6 +1883,13 @@ MonoBehaviour:
   BestScoreText_GameOver: {fileID: 1587498657}
   autopilotToggle_Settings: {fileID: 634352476}
   soundImageMainMenu: {fileID: 1428998360}
+  mapColorsEvery25Crystals:
+  - {r: 0.43137255, g: 0.5764706, b: 0.94509804, a: 1}
+  - {r: 0.94509804, g: 0.8047039, b: 0.43137252, a: 1}
+  - {r: 0.52955776, g: 0.94509804, b: 0.43137252, a: 1}
+  - {r: 0.94509804, g: 0.43137252, b: 0.50205034, a: 1}
+  - {r: 0.94509804, g: 0.43137252, b: 0.9432613, a: 1}
+  mapItemMaterial: {fileID: 0}
 --- !u!114 &319557258
 MonoBehaviour:
   m_ObjectHideFlags: 0

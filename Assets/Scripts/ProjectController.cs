@@ -21,6 +21,7 @@ public class ProjectController
     private bool _autopilotOn;
     public UserDatas UserDatas;
     public bool CanAddNewCrystal = true;
+    public int ChangeColorEveryCrystalCount { get => 10; }
     public bool SoundOn
     {
         get => _soundOn;
@@ -75,7 +76,6 @@ public class ProjectController
             PlayerPrefs.SetInt("Autopilot", value ? 1 : 0);
         }
     }
-
     public int GamesPlayed
     {
         get => _gamesPlayed; 
@@ -84,7 +84,6 @@ public class ProjectController
             PlayerPrefs.SetInt("GamesPlayed", _gamesPlayed);
         }
     }
-
     public Action UIStateChanged;
 }
 public enum UIState

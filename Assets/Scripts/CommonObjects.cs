@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,4 +28,6 @@ public class CommonObjects : MonoBehaviour
     public TMP_Text BestScoreText_GameOver;
     public GameObject autopilotToggle_Settings;
     public Image soundImageMainMenu;
+    public List<Color> mapColorsEvery25Crystals;
+    public Material mapItemMaterial;
 }
