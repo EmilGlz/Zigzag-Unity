@@ -31,14 +31,14 @@ public class UIManager : MonoBehaviour
         pauseMenuController = new PauseMenuController();
         settingsMenuController = new SettingsMenuController();
         ProjectController.Instance.UIStateChanged += UpdateCurrentCrystalCountText;
-        SetDefaultCanvases();
+        //SetDefaultCanvases();
         ProjectController.Instance.UIState = UIState.MainMenu;
         autopilotToggle = new CustomToggle(CommonObjects.Instance.autopilotToggle_Settings, ProjectController.Instance.AutopilotOn, AutopilotToggleChanged);
         CommonObjects.Instance.soundImageMainMenu.fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
         mainMenuController.Open();
-        pauseMenuController.Close();
-        gameOverMenuController.Close();
-        settingsMenuController.Close();
+        pauseMenuController.Close(false);
+        gameOverMenuController.Close(false);
+        settingsMenuController.Close(false);
         CommonObjects.Instance.mapItemMaterial.color = CommonObjects.Instance.mapColorsEvery25Crystals[0];
     }
     private void SetDefaultCanvases()

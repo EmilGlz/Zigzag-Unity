@@ -19,28 +19,48 @@ public class GameOverMenuController
         _bestScoreText = bestScoreText;
     }
 
-    public void Open(int currentScore, int bestScore)
+    public void Open(int currentScore, int bestScore, bool withAnimation = true)
     {
         _currentScoreText.text = currentScore.ToString();
         _bestScoreText.text = bestScore.ToString();
         CommonObjects.Instance.GameOverCanvas.gameObject.SetActive(true);
-        Sequence mySequence = DOTween.Sequence();
-        for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+        if(withAnimation)
         {
-            Tween tween = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(insidePosX, openAnimTime).SetDelay(0);
-            mySequence.Append(tween);
+            Sequence mySequence = DOTween.Sequence();
+            for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+            {
+                Tween tween = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(insidePosX, openAnimTime).SetDelay(0);
+                mySequence.Append(tween);
+            }
+            mySequence.Play();
+        }else
+        {
+            for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+            {
+                var rect = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
+            }
         }
-        mySequence.Play();
     }
-    public void Close()
+    public void Close(bool withAnimation = true)
     {
         CommonObjects.Instance.GameOverCanvas.gameObject.SetActive(true);
-        Sequence mySequence = DOTween.Sequence();
-        for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+        if(withAnimation)
         {
-            Tween tween = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(outsidePosX, closeAnimTime).SetDelay(0);
-            mySequence.Append(tween);
+            Sequence mySequence = DOTween.Sequence();
+            for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+            {
+                Tween tween = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(outsidePosX, closeAnimTime).SetDelay(0);
+                mySequence.Append(tween);
+            }
+            mySequence.Play();
         }
-        mySequence.Play();
+        else{
+            for (int i = 0; i < CommonObjects.Instance.GameOverCanvas.childCount; i++)
+            {
+                var rect = CommonObjects.Instance.GameOverCanvas.GetChild(i).GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(outsidePosX, rect.anchoredPosition.y);
+            }
+        }
     }
 }

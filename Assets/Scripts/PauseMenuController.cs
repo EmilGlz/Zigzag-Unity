@@ -9,16 +9,27 @@ public class PauseMenuController
     private readonly float closeAnimTime = 0.08f;
     private readonly float outsidePosX = Screen.width;
     private readonly float insidePosX = 0f;
-    public void Open()
+    public void Open(bool withAnimation = true)
     {
         CommonObjects.Instance.PauseCanvas.gameObject.SetActive(true);
-        Sequence mySequence = DOTween.Sequence();
-        for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+        if (withAnimation)
         {
-            Tween tween = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(insidePosX, openAnimTime).SetDelay(0);
-            mySequence.Append(tween);
+            Sequence mySequence = DOTween.Sequence();
+            for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+            {
+                Tween tween = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(insidePosX, openAnimTime).SetDelay(0);
+                mySequence.Append(tween);
+            }
+            mySequence.Play();
         }
-        mySequence.Play();
+        else 
+        {
+            for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+            {
+                var rect = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
+            }
+        }
     }
     public void Close(bool withAnimation = true)
     {
@@ -37,7 +48,8 @@ public class PauseMenuController
         {
             for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
             {
-                //CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new  outsidePosX
+                var rect = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(outsidePosX, rect.anchoredPosition.y);
             }
         }
     }
