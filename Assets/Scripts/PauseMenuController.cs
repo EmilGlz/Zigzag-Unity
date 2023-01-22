@@ -20,15 +20,25 @@ public class PauseMenuController
         }
         mySequence.Play();
     }
-    public void Close()
+    public void Close(bool withAnimation = true)
     {
         CommonObjects.Instance.PauseCanvas.gameObject.SetActive(true);
-        Sequence mySequence = DOTween.Sequence();
-        for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+        if (withAnimation)
         {
-            Tween tween = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(outsidePosX, closeAnimTime).SetDelay(0);
-            mySequence.Append(tween);
+            Sequence mySequence = DOTween.Sequence();
+            for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+            {
+                Tween tween = CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().DOAnchorPosX(outsidePosX, closeAnimTime).SetDelay(0);
+                mySequence.Append(tween);
+            }
+            mySequence.Play();
         }
-        mySequence.Play();
+        else
+        {
+            for (int i = 0; i < CommonObjects.Instance.PauseCanvas.childCount; i++)
+            {
+                //CommonObjects.Instance.PauseCanvas.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new  outsidePosX
+            }
+        }
     }
 }

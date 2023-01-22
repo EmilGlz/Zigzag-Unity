@@ -19,7 +19,6 @@ public class ProjectController
     private UIState _uiState;
     private bool _soundOn;
     private bool _autopilotOn;
-    public UserDatas UserDatas;
     public bool CanAddNewCrystal = true;
     public int ChangeColorEveryCrystalCount { get => 10; }
     public bool SoundOn
