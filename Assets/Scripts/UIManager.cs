@@ -36,6 +36,9 @@ public class UIManager : MonoBehaviour
         autopilotToggle = new CustomToggle(CommonObjects.Instance.autopilotToggle_Settings, ProjectController.Instance.AutopilotOn, AutopilotToggleChanged);
         CommonObjects.Instance.soundImageMainMenu.fillAmount = ProjectController.Instance.SoundOn ? 1f : 0.6f;
         mainMenuController.Open();
+        pauseMenuController.Close();
+        gameOverMenuController.Close();
+        settingsMenuController.Close();
         CommonObjects.Instance.mapItemMaterial.color = CommonObjects.Instance.mapColorsEvery25Crystals[0];
     }
     private void SetDefaultCanvases()
