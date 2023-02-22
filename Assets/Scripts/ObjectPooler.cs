@@ -71,7 +71,7 @@ public class ObjectPooler : MonoBehaviour
 
     public void DequeueAllObjectsFromPool(string tag)
     {
-        var objArr = activeObjectsFromPool[tag].ToArray();
+        var objArr = poolDictionary[tag].ToArray();
         for (int i = 0; i < objArr.Length; i++)
         {
             objArr[i].SetActive(false);

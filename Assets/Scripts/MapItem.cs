@@ -17,6 +17,8 @@ public class MapItem : MonoBehaviour, IPooledObject
     public Action OnObjectFinish { get; set; }
     public GameObject Instance { get => gameObject; }
     TweenerCore<Vector3, Vector3, VectorOptions> seq;
+    private bool _isReset = false;
+
     public bool isAnimating = false;
     private void Start()
     {
@@ -25,6 +27,7 @@ public class MapItem : MonoBehaviour, IPooledObject
     }
     public void OnObjectSpawn()
     {
+        _isReset = false;
         isAnimating = false;
         hasCrystal = ProjectController.Instance.CanAddNewCrystal && UnityEngine.Random.Range(0, 2) % 2 == 0;
         isTouched = false;
@@ -53,6 +56,7 @@ public class MapItem : MonoBehaviour, IPooledObject
 
     public void ResetPosition()
     {
+        _isReset = true;
         isTouched = false;
         seq.Kill();
         transform.position = startPos;
@@ -61,6 +65,8 @@ public class MapItem : MonoBehaviour, IPooledObject
 
     void DownAnimationComplete()
     {
+        if (_isReset)
+            ResetPosition();
         isAnimating = false;
         gameObject.SetActive(false);
         OnObjectFinish?.Invoke();
