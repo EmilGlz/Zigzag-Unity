@@ -5266,6 +5266,7 @@ MonoBehaviour:
   crystalObject: {fileID: 0}
   isTouched: 0
   hasCrystal: 0
+  mapItemData: {fileID: 11400000, guid: 762be4cda779aae44889d679e2ba1bac, type: 2}
   isAnimating: 0
 --- !u!1 &1561612171
 GameObject:
