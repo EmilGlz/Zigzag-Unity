@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IUpdateable
 {
     #region Singleton
     private static PlayerMovement _instance;
@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
         _instance = this;
     }
     #endregion
+    public int interval => 1;
     [SerializeField] private float _speed;
     Rigidbody rb;
     public bool hasStarted;
@@ -22,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 lastMoveDirection;
     public Transform nextCornerDestination;
     public bool xReached, zReached;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,29 +30,6 @@ public class PlayerMovement : MonoBehaviour
         movingAllowed = true;
         startPos = transform.position;
         nextCornerDestination = MapGenerator.Instance.firstItem;
-    }
-    void Update()
-    {
-        if (!movingAllowed)
-            return;
-        if (ProjectController.Instance.AutopilotOn)
-        { 
-            CalculateXZReachers();
-            if (xReached && zReached)
-            {
-                var res = MapGenerator.Instance.pathCorners.ToArray();
-                if (res[0] == nextCornerDestination)
-                {
-                    //Debug.Log(res[0].name + " -> " + res[1].name);
-                    nextCornerDestination = res[1];
-                    MapGenerator.Instance.pathCorners.Dequeue();
-                }
-                CalculateXZReachers();
-            }
-            movingRight = zReached && !xReached;
-        }
-        if (hasStarted && isAlive)
-            SetMovementDirection();
     }
     private void SetMovementDirection()
     {
@@ -111,5 +88,36 @@ public class PlayerMovement : MonoBehaviour
         var res = (nextCornerDestination.position - transform.position);
         zReached = res.z <= 0;
         xReached = res.x <= 0;
+    }
+    public void Tick()
+    {
+        if (!movingAllowed)
+            return;
+        if (ProjectController.Instance.AutopilotOn)
+        {
+            CalculateXZReachers();
+            if (xReached && zReached)
+            {
+                var res = MapGenerator.Instance.pathCorners.ToArray();
+                if (res[0] == nextCornerDestination)
+                {
+                    //Debug.Log(res[0].name + " -> " + res[1].name);
+                    nextCornerDestination = res[1];
+                    MapGenerator.Instance.pathCorners.Dequeue();
+                }
+                CalculateXZReachers();
+            }
+            movingRight = zReached && !xReached;
+        }
+        if (hasStarted && isAlive)
+            SetMovementDirection();
+    }
+    void OnEnable()
+    {
+        Main.Register(this);
+    }
+    void OnDisable()
+    {
+        Main.Unregister(this);
     }
 }

@@ -50,7 +50,6 @@ public class MapItem : MonoBehaviour, IPooledObject
             seq.Play();
         }
     }
-
     public void ResetPosition()
     {
         _isReset = true;
@@ -59,7 +58,6 @@ public class MapItem : MonoBehaviour, IPooledObject
         transform.position = startPos;
         gameObject.SetActive(true);
     }
-
     void DownAnimationComplete()
     {
         if (_isReset)
