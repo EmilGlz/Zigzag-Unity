@@ -143,6 +143,8 @@ MonoBehaviour:
   crystalObject: {fileID: 8906255391490631964}
   isTouched: 0
   hasCrystal: 0
+  mapItemData: {fileID: 11400000, guid: 762be4cda779aae44889d679e2ba1bac, type: 2}
+  isAnimating: 0
 --- !u!1001 &3667561467447937696
 PrefabInstance:
   m_ObjectHideFlags: 0

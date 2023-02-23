@@ -9,16 +9,13 @@ public class MapItem : MonoBehaviour, IPooledObject
     public GameObject crystalObject;
     public bool isTouched;
     public bool hasCrystal;
-    MapGenerator generator;
-    private readonly float downAnimationHeight = 10f;
-    private readonly float downAnimationDuration = 1f;
-    private readonly float downAnimationDelay = 1f;
+    [SerializeField] private MapItemScriptibleObject mapItemData;
     private Vector3 startPos;
     public Action OnObjectFinish { get; set; }
     public GameObject Instance { get => gameObject; }
     TweenerCore<Vector3, Vector3, VectorOptions> seq;
+    MapGenerator generator;
     private bool _isReset = false;
-
     public bool isAnimating = false;
     private void Start()
     {
@@ -46,9 +43,9 @@ public class MapItem : MonoBehaviour, IPooledObject
         if (collision.gameObject.CompareTag("Player") && isTouched)
         {
             isAnimating = true;
-            seq = transform.DOMoveY(endValue: transform.position.y - downAnimationHeight,
-                duration: downAnimationDuration)
-                .SetDelay(downAnimationDelay)
+            seq = transform.DOMoveY(endValue: transform.position.y - mapItemData.downAnimationHeight,
+                duration: mapItemData.downAnimationDuration)
+                .SetDelay(mapItemData.downAnimationDelay)
                 .OnComplete(DownAnimationComplete);
             seq.Play();
         }
