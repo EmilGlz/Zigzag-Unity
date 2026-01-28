@@ -35,11 +35,11 @@ public class PlayerMovement : MonoBehaviour, IUpdateable
     {
         if (movingRight)
         {
-            rb.velocity = (Vector3.right * _speed) + Physics.gravity;
+            rb.linearVelocity = (Vector3.right * _speed) + Physics.gravity;
         }
         else
         {
-            rb.velocity = (Vector3.forward * _speed) + Physics.gravity;
+            rb.linearVelocity = (Vector3.forward * _speed) + Physics.gravity;
         }
     }
     public void ResetPlayer()
@@ -50,14 +50,14 @@ public class PlayerMovement : MonoBehaviour, IUpdateable
         isAlive = true;
         movingRight = true;
         transform.position = startPos;
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Death"))
         {
             isAlive = false;
-            rb.velocity = Physics.gravity;
+            rb.linearVelocity = Physics.gravity;
             UIManager.Instance.ShowGameOver();
             AudioManager.Instance.Play(0);
             ProjectController.Instance.GamesPlayed++;
@@ -75,13 +75,13 @@ public class PlayerMovement : MonoBehaviour, IUpdateable
     public void StopMoving()
     {
         movingAllowed = false;
-        lastMoveDirection = rb.velocity;
-        rb.velocity = Vector3.zero;
+        lastMoveDirection = rb.linearVelocity;
+        rb.linearVelocity = Vector3.zero;
     }
     public void ContinueMoving()
     {
         movingAllowed = false;
-        rb.velocity = lastMoveDirection;
+        rb.linearVelocity = lastMoveDirection;
     }
     void CalculateXZReachers()
     {
